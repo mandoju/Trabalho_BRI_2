@@ -1,0 +1,9 @@
+Devido ao imprevisto com a data de envio, não foi possível calcular o DCG e NDCG e nem foi possível utilizar o stemmer .
+
+Segue os resultados gerados pelo programa
+
+MAP com precision@10 :0.4070707070707068
+MAP com todos os resultados: 0.03909880700004156
+Média do F1 : 0.07248268645049497
+
+O gráfico de 11 pontos está sendo gerado no arquivo 11pontos-nostemmer . é utilizado apenas a média das precisões para calcular o gráfico.

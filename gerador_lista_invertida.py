@@ -5,6 +5,7 @@ from lxml import etree as ET
 from xml.dom import minidom
 import codecs
 
+import nltk
 
 import logging
 import time
@@ -48,6 +49,12 @@ def ler_arquivo_clg():
     config.read(['GLI.CFG'])
     entradas = config.get("DEFAULT","LEIA");
     saida = config.get("DEFAULT", "ESCREVE");
+    stemmer_config = config.get("DEFAULT", "STEMMER");
+
+    if (stemmer_config[0] == 'true'):
+        stemmer = 1
+    else:
+        stemmer = 0
 
     logging.info("GLI.CFG has been read")
 
@@ -92,14 +99,25 @@ def ler_arquivo_clg():
                 for word in text_words:
                     word_found = False
                     for wd in words_documents:
-                        if(wd.word == word):
-                            wd.documents.append(recordnum)
-                            word_found = True
-                            break
-                    if(word_found == False):
-                        w = word_document(word)
-                        w.documents.append(recordnum)
-                        words_documents.append(w)
+                        if (stemmer == 0):
+                            if (wd.word == word):
+                                wd.documents.append(recordnum)
+                                word_found = True
+                                break
+                        else:
+                            if (wd.word == nltk.stem(word)):
+                                wd.documents.append(recordnum)
+                                word_found = True
+                                break
+                    if (word_found == False):
+                        if (stemmer == 0):
+                            w = word_document(word)
+                            w.documents.append(recordnum)
+                            words_documents.append(w)
+                        else:
+                            w = word_document(nltk.stem(word))
+                            w.documents.append(recordnum)
+                            words_documents.append(w)
 
                 #print(s.attributes['RECORDNUM'].value)
         else:
